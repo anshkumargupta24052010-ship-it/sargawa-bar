@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Lounge | Sargawa Bar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+    <div id="bar-view-wrapper">
+        <header class="bar-header">
+            <div class="neon-line"></div>
+            <h1 id="secret-trigger" style="cursor: pointer; user-select: none;">OBSIDIAN</h1>
+            <p class="tagline">THE SPIRIT OF SARGAWA</p>
+            
+            <div class="bar-filters" id="filter-container">
+                <button class="filter-btn active" onclick="filterBar('all', this)">All Spirits</button>
+                </div>
+        </header>
+
+        <main class="bar-grid" id="bar-container"></main>
+    </div>
+
+    <main id="bar-detail-view" class="bar-detail-container hidden"></main>
+
+    <div id="admin-modal" class="admin-modal hidden">
+        <div class="admin-content">
+            <span class="close-admin" onclick="toggleAdminModal()">&times;</span>
+            
+            <div id="admin-login-section">
+                <h2>ADMIN LOGIN</h2>
+                <input type="password" id="admin-pass" placeholder="ENTER SECRET PASSWORD">
+                <button class="btn-bar-order" onclick="checkAdminLogin()">LOGIN</button>
+            </div>
+
+            <div id="admin-dashboard-section" class="hidden">
+                <h2>ADD NEW SPIRIT</h2>
+                <div class="form-group">
+                    <input type="text" id="item-type" placeholder="TYPE (e.g. Signature, Classic, Wine)">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="item-name" placeholder="ITEM NAME">
+                </div>
+                <div class="form-group">
+                    <input type="number" id="item-rate" placeholder="RATE (INR)">
+                </div>
+                <div class="form-group">
+                    <label for="item-img" class="custom-file-upload">CHOOSE IMAGE</label>
+                    <input type="file" id="item-img" accept="image/*">
+                </div>
+                <button class="btn-bar-order" onclick="addNewItem()">ADD TO MENU</button>
+
+                <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
+                
+                <h2>GENERATE MENU QR</h2>
+                <div id="qrcode" style="margin: 20px auto; display: flex; justify-content: center;"></div>
+                <button class="btn-bar-back" onclick="downloadQR()">DOWNLOAD QR CODE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
