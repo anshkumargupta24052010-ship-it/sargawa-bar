@@ -3,62 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obsidian Lounge | Sargawa Bar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Obsidian Lounge & Bar</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-    <div id="bar-view-wrapper">
-        <header class="bar-header">
-            <div class="neon-line"></div>
-            <h1 id="secret-trigger" style="cursor: pointer; user-select: none;">OBSIDIAN</h1>
-            <p class="tagline">THE SPIRIT OF SARGAWA</p>
-            
-            <div class="bar-filters" id="filter-container">
-                <button class="filter-btn active" onclick="filterBar('all', this)">All Spirits</button>
-                </div>
-        </header>
+    <header>
+        <div class="logo" id="secret-trigger">OBSIDIAN</div>
+        <nav>
+            <a href="#" id="whatsapp-book-btn" class="book-btn">💬 BOOK TABLE</a>
+        </nav>
+    </header>
 
-        <main class="bar-grid" id="bar-container"></main>
+    <section class="hero">
+        <h1>OBSIDIAN LOUNGE</h1>
+        <p>EXPERIENCE THE FINEST SPIRITS & AMBIANCE</p>
+    </section>
+
+    <main class="menu-section">
+        <h2 class="section-title">OUR MENU</h2>
+        <div id="bar-container" class="menu-grid">
+            </div>
+    </main>
+
+    <div id="order-modal" class="modal-overlay" style="display: none;">
+        <div class="preview-container">
+            <div class="preview-left">
+                <img id="preview-item-img" src="" alt="Item Image">
+            </div>
+            
+            <div class="preview-right">
+                <div>
+                    <span id="preview-item-tag" class="preview-tag">COCKTAIL</span>
+                    <h3 id="preview-item-name">ITEM NAME</h3>
+                    <p id="preview-item-desc">Item Description goes here. Beautifully written text about the ingredients and luxury experience.</p>
+                </div>
+                
+                <div class="preview-footer">
+                    <p id="preview-item-price">INR 000</p>
+                    <div class="popup-actions">
+                        <button onclick="processWhatsAppOrder()" class="btn-whatsapp">🚀 PLACE ORDER</button>
+                        <button onclick="closeOrderModal()" class="btn-back">⬅️ BACK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <main id="bar-detail-view" class="bar-detail-container hidden"></main>
+    <div id="admin-modal" class="modal-overlay hidden">
+        <div class="admin-box">
+            <div class="admin-header">
+                <h3>ADMIN PORTAL</h3>
+                <button onclick="toggleAdminModal()" class="close-btn">&times;</button>
+            </div>
 
-    <div id="admin-modal" class="admin-modal hidden">
-        <div class="admin-content">
-            <span class="close-admin" onclick="toggleAdminModal()">&times;</span>
-            
             <div id="admin-login-section">
-                <h2>ADMIN LOGIN</h2>
                 <input type="password" id="admin-pass" placeholder="ENTER SECRET PASSWORD">
-                <button class="btn-bar-order" onclick="checkAdminLogin()">LOGIN</button>
+                <button onclick="checkAdminLogin()" class="btn-admin-main">LOGIN</button>
             </div>
 
             <div id="admin-dashboard-section" class="hidden">
-                <h2>ADD NEW SPIRIT</h2>
-                <div class="form-group">
-                    <input type="text" id="item-type" placeholder="TYPE (e.g. Signature, Classic, Wine)">
+                <div class="qr-wrapper">
+                    <div id="qrcode"></div>
+                    <button onclick="downloadQR()" class="btn-download-qr">📥 DOWNLOAD MENU QR</button>
                 </div>
-                <div class="form-group">
-                    <input type="text" id="item-name" placeholder="ITEM NAME">
-                </div>
-                <div class="form-group">
-                    <input type="number" id="item-rate" placeholder="RATE (INR)">
-                </div>
-                <div class="form-group">
-                    <label for="item-img" class="custom-file-upload">CHOOSE IMAGE</label>
-                    <input type="file" id="item-img" accept="image/*">
-                </div>
-                <button class="btn-bar-order" onclick="addNewItem()">ADD TO MENU</button>
-
-                <hr style="border: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">
                 
-                <h2>GENERATE MENU QR</h2>
-                <div id="qrcode" style="margin: 20px auto; display: flex; justify-content: center;"></div>
-                <button class="btn-bar-back" onclick="downloadQR()">DOWNLOAD QR CODE</button>
+                <hr class="divider">
+
+                <div class="admin-form">
+                    <h4>MANAGE MENU ITEM</h4>
+                    <input type="text" id="item-name" placeholder="Item Name *">
+                    <input type="number" id="item-rate" placeholder="Price (INR) *">
+                    
+                    <select id="item-type">
+                        <option value="Drink">Drink</option>
+                        <option value="Food">Food</option>
+                    </select>
+
+                    <select id="sub-category">
+                        <option value="Cocktail">Cocktail</option>
+                        <option value="Mocktail">Mocktail</option>
+                        <option value="Whiskey">Whiskey</option>
+                        <option value="Appetizer">Appetizer</option>
+                        <option value="Main Course">Main Course</option>
+                    </select>
+
+                    <textarea id="item-desc" placeholder="Short Description..."></textarea>
+                    
+                    <label class="file-label">
+                        <span>📷 Upload Image *</span>
+                        <input type="file" id="item-img" accept="image/*">
+                    </label>
+
+                    <button id="add-btn" onclick="addNewItem()" class="btn-admin-main">➕ ADD TO MENU</button>
+                    <button id="update-btn" onclick="saveItemChanges()" class="btn-admin-main btn-update hidden">✍️ SAVE CHANGES</button>
+                    <button id="cancel-edit-btn" onclick="cancelEdit()" class="btn-back hidden">CANCEL EDIT</button>
+                </div>
+
+                <hr class="divider">
+                
+                <h4>LIVE ITEMS DIRECTORY</h4>
+                <div id="admin-items-list" class="admin-items-directory"></div>
             </div>
         </div>
     </div>
